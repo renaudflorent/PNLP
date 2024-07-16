@@ -35,7 +35,6 @@ async function copyDBtoAsset() {
     const fileInfo = await FileSystem.getInfoAsync(dbUri);
     if (!fileInfo.exists) {
       await FileSystem.downloadAsync(dbAsset.uri, dbUri);
-      console.log("Database copied successfully.");
       console.log("Database copied successfully, OK.");
       await AsyncStorage.setItem("isDBCopied", "true"); // Set the flag
     } else {
