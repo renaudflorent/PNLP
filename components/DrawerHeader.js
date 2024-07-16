@@ -19,20 +19,21 @@ const styles = StyleSheet.create({
     height: 200,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: 'lightblue',
+   
   },
   text: {
     fontSize: 20,
     fontWeight: 'bold',
-    marginLeft:10
+    marginLeft:10,
+    marginTop:0,
   },
   image: {
     width: 100, // Adjust the width of the image
     height: 100, // Adjust the height of the image
-    marginHorizontal: 20,
+    marginHorizontal: 0,
     marginLeft: 20,
     resizeMode: 'cover', // Set resizeMode to 'cover' to cover the entire container
-    borderRadius: 50, // Adjust the borderRadius to create a circular image
+    borderRadius: 10, // Adjust the borderRadius to create a circular image
   },
 });
 
