@@ -145,6 +145,7 @@ const SendSMS = ({ navigation }) => {
     const codefk = rows[0].code_fokontany;
     setCodeFokontany(codefk);
     //console.log("query[0].code_district");
+    
     console.log(rows[0].code_district);
     setCodeDistrict(rows[0].code_district);
     console.log(codefk);
