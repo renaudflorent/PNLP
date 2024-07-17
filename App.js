@@ -49,7 +49,7 @@ const checkAndCopyDB = async () => {
       await copyDBtoAsset();
     }
   } catch (error) {
-    console.error("Error checking database copy status:", error);
+    console.error("Error checking database copy status e:", error);
   }
 };
 
