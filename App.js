@@ -38,7 +38,7 @@ async function copyDBtoAsset() {
       console.log("Database copied successfully, OK.");
       await AsyncStorage.setItem("isDBCopied", "true"); // Set the flag
     } else {
-      console.log("Database already exists.");
+      console.log("Database already exists an!.");
     }
   } catch (error) {
     //   console.error('Error copying database:', error);
