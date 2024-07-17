@@ -1,10 +1,9 @@
-// App.js
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import WelcomeScreen from "./screens/WelcomeScreen";
 import DrawerNavigator from "./navigation/DrawerNavigator";
-import { AppRegistry } from "react-native";
+import { AppRegistry, AppState } from "react-native";
 import { name as appName } from "./app.json";
 import { Asset } from "expo-asset";
 import * as FileSystem from "expo-file-system";
@@ -18,9 +17,8 @@ async function copyDBtoAsset() {
     const dbAsset = Asset.fromModule(require("./assets/pnlpDB.db"));
     const dbUri = `${FileSystem.documentDirectory}SQLite/pnlpDB.db`;
 
-    //FOCK COPY
+   // force copy
     //await FileSystem.downloadAsync(dbAsset.uri, dbUri);
-
     // Ensure the SQLite directory exists
     const dirInfo = await FileSystem.getInfoAsync(
       `${FileSystem.documentDirectory}SQLite`
@@ -35,31 +33,55 @@ async function copyDBtoAsset() {
     const fileInfo = await FileSystem.getInfoAsync(dbUri);
     if (!fileInfo.exists) {
       await FileSystem.downloadAsync(dbAsset.uri, dbUri);
-      console.log("Database copied successfully, OK.");
+      console.log("Database copied successfully.");
       await AsyncStorage.setItem("isDBCopied", "true"); // Set the flag
     } else {
       console.log("Database already exists.");
     }
   } catch (error) {
-    //   console.error('Error copying database:', error);
+    console.error('Error copying database:', error);
   }
 }
+const checkAndCopyDB = async () => {
+  try {
+    const isDBCopied = await AsyncStorage.getItem("isDBCopied");
+    if (!isDBCopied) {
+      await copyDBtoAsset();
+    }
+  } catch (error) {
+    console.error("Error checking database copy status:", error);
+  }
+};
 
-const App = (props) => {
+const App = () => {
+  const [appState, setAppState] = useState(AppState.currentState);
+
   useEffect(() => {
-    const checkAndCopyDB = async () => {
-      try {
-        const isDBCopied = await AsyncStorage.getItem("isDBCopied");
-        if (!isDBCopied) {
-          await copyDBtoAsset();
-        }
-      } catch (error) {
-        console.error("Error checking database copy status:", error);
-      }
-    };
-    //copyDBtoAsset();
+    //Force copy DB
+    //copyDBtoAsset(); 
     checkAndCopyDB();
   }, []);
+
+  useEffect(() => {
+    const handleAppStateChange = (nextAppState) => {
+      if (appState.match(/inactive|background/) && nextAppState === 'active') {
+        console.log("App has come to the foreground!");
+        //checkAndCopyDB();
+        // Place your logic for app entering foreground here
+      } else if (nextAppState.match(/inactive|background/)) {
+        console.log("App has gone to the background!");
+        //checkAndCopyDB();
+        // Place your logic for app entering background here
+      }
+      setAppState(nextAppState);
+    };
+
+    const subscription = AppState.addEventListener("change", handleAppStateChange);
+
+    return () => {
+      subscription.remove();
+    };
+  }, [appState]);
 
   return (
     <NavigationContainer>

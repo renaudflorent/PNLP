@@ -9,7 +9,7 @@ const WelcomeScreen = ({ navigation=null }) => {
   const [showPassword, setShowPassword] = useState(false);
   const handleLogin = () => {
     // Add your authentication logic here
-    if (username === 'A' && password === 'B') {
+    if (username === 'cdm2024' && password === 'mii2024') {
       navigation.replace('DrawerNavigator');
     } else {
       alert('Invalid credentials');
@@ -29,7 +29,7 @@ const WelcomeScreen = ({ navigation=null }) => {
       />
       <TextInput
         style={styles.input}
-        placeholder="Password"
+        placeholder="mot de passe"
         secureTextEntry={!showPassword}
         value={password}
         onChangeText={setPassword}
