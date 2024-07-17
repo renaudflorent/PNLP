@@ -198,7 +198,14 @@ const SendSMS = ({ navigation }) => {
 
   useEffect(() => {
     fetchData();
+    
+    
   }, []);
+  const isButtonDisabled = () => {
+    return !codeFokontany || !codeDistrict || !codeOperation || !phoneNumber || population < menage;
+  };
+  
+  
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
@@ -217,7 +224,7 @@ const SendSMS = ({ navigation }) => {
           maxHeight={300}
           labelField="label"
           valueField="value"
-          placeholder={!isFocusFkt ? "Choisissez le Fokontany" : "..."}
+          placeholder={!isFocusFkt ? "Choisir le Fokontany" : "..."}
           searchPlaceholder="Rechercher..."
           value={valueFkt}
           onFocus={() => setIsFocusFkt(true)}
@@ -244,7 +251,7 @@ const SendSMS = ({ navigation }) => {
           maxHeight={300}
           labelField="label"
           valueField="value"
-          placeholder={!isFocusOp ? "Choisissez le l'Opération" : "..."}
+          placeholder={!isFocusOp ? "Choisir l'Opération" : "..."}
           searchPlaceholder="Rechercher..."
           value={valueOp}
           onFocus={() => setIsFocusOp(true)}
@@ -342,7 +349,7 @@ const SendSMS = ({ navigation }) => {
           onChangeText={setPhoneNumber}
           keyboardType="phone-pad"
         />
-        <Button title="Formater le SMS" onPress={handleSendSMS} />
+        <Button title="Formater le SMS" onPress={handleSendSMS} disabled={isButtonDisabled()} />
       </ScrollView>
     </KeyboardAvoidingView>
   );
